@@ -3,6 +3,8 @@ import { Route, Redirect } from 'react-router-dom';
 import fakeAuth from './fakeAuth';
 
 const AuthRoute = ({component: Component, authed, ...rest}) => {
+  fakeAuth.authenticate();
+
   return (
     <Route
       {...rest}

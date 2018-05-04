@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withRouter from 'react-router-dom/withRouter';
+import AuthService from '../Auth/AuthService';
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -18,17 +19,20 @@ class LoginScreen extends Component {
     password: ''
   }
 
-  // componentWillMount() {
-  //   // this.props.stuffActions.fetchStuff();
-  // }
-
   onChangeInput(e) {
     this.setState({[e.target.name]: e.target.value});
   }
 
   onSubmit(e) {
-    console.log(this.state);
-    this.props.history.push('/articles')
+    AuthService(this.state)
+      .then(({ isAuthenticated }) => {
+        console.log("AUTHENTICATED: " + isAuthenticated);
+        this.props.history.push('/home');
+      })
+      .catch((e) => {
+        console.log("Use admin@thewire.in and admin as username and passwords.");
+        throw e;
+      });
   }
 
   render() {

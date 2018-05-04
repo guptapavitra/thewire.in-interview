@@ -4,13 +4,13 @@ const fakeAuth = {
     setTimeout(() => {
       this.isAuthenticated = true;
       cb();
-    }, 1000) // fake async
+    }, 500) // fake async
   },
   signout(cb) {
     setTimeout(() => {
       this.isAuthenticated = false
       cb();
-    }, 1000) // fake async
+    }, 500) // fake async
   }
 }
 
