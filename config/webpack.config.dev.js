@@ -164,10 +164,14 @@ module.exports = {
                 loader: require.resolve('css-loader'),
                 options: {
                   importLoaders: 1,
+                  sourceMap: true
                 },
               },
               {
                 loader: require.resolve('sass-loader'),
+                options: {
+                  sourceMap: true,
+                },
               },
               {
                 loader: require.resolve('postcss-loader'),
