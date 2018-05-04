@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Redirect from 'react-router-dom/Redirect';
 import './App.css';
 import LoginScreen from './containers/LoginScreen';
-import ArticleComponent from './containers/ArticleComponent';
+import ArticlesComponent from './containers/ArticlesComponent';
 import AuthRoute from './AuthRoute';
 import HomeScreen from './containers/HomeScreen';
 import AboutUsComponent from './containers/AboutUsComponent';
@@ -15,7 +15,7 @@ class App extends Component {
         <Switch>
           <Route exact path='/' render={() => <Redirect to="/login" />}/>
           <Route path='/login' component={ LoginScreen }/>
-          <Route path='/articles' component={ArticleComponent} />
+          <Route path='/articles' component={ArticlesComponent} />
           <Route path='/home' component={HomeScreen} />
           <Route path='/aboutus' component={AboutUsComponent} />
         </Switch>

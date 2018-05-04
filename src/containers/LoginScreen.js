@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as stuffActions from '../actions/stuffActions';
+// import * as articlesActions from '../actions/articlesActions';
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withRouter from 'react-router-dom/withRouter';
@@ -18,9 +18,9 @@ class LoginScreen extends Component {
     password: ''
   }
 
-  componentWillMount() {
-    this.props.stuffActions.fetchStuff();
-  }
+  // componentWillMount() {
+  //   // this.props.stuffActions.fetchStuff();
+  // }
 
   onChangeInput(e) {
     this.setState({[e.target.name]: e.target.value});
@@ -55,7 +55,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    stuffActions: bindActionCreators(stuffActions, dispatch)
+    // stuffActions: bindActionCreators(stuffActions, dispatch)
   };
 }
 

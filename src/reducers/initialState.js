@@ -1,3 +1,4 @@
 export default {
-  stuff: []
+  isFetching: false,
+  articles: []
 };
