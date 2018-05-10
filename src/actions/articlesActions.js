@@ -4,24 +4,38 @@ function url() {
   return 'www.url.com';
 }
 
-export function fetchArticles() {
+export function fetchArticles({ skip = 0 }) {
   return dispatch => {
     dispatch({type: types.REQUEST_ARTICLES});
 
-    setTimeout(() => {
-      dispatch({
-        type: types.RECEIVE_ARTICLES,
-        articles: [{
-            articleId: 1,
-            title: "MI Stays at the bottom of the table after day 36",
-            content: "This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard."
-          }, {
-            articleId: 2,
-            title: "MI Stays at the bottom of the table after day 36",
-            content: "This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard. This is a news about MI staying at the bottom of the table even after trying hard."
-          }
-        ]
-      })
-    }, 500); // Faking async.
+    fetch(`http://localhost:4040/api/articles?limit=${4}&skip=${skip}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    }).then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.length < 4) {
+          dispatch({type: types.ALL_ARTICLES_RECEIVED});
+        }
+
+        dispatch({
+          type: types.RECEIVE_ARTICLES,
+          articles: resp
+        });
+      });
+  };
+}
+
+export function reachesBottom() {
+  return dispatch => {
+    dispatch({type: types.REACHES_BOTTOM});
+  };
+}
+
+export function leavesBottom() {
+  return dispatch => {
+    dispatch({type: types.LEAVES_BOTTOM});
   };
 }

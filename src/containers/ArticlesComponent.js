@@ -7,18 +7,49 @@ import PropTypes from 'prop-types'
 class ArticlesComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.endElement = React.createRef();
+  }
+
+  isElementInViewport (el) {
+    let rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+    );
   }
 
   componentWillMount() {
-    this.props.articlesActions.fetchArticles();
+    let that = this;
+    this.props.articlesActions.fetchArticles({ skip: this.props.countAlreadyLoadedArticles });
+
+    let oldOnScroll = window.onscroll;
+    window.onscroll = function() {
+      oldOnScroll && oldOnScroll.apply(window);
+
+      if (!that.props.isAtBottom) {
+        if (that.isElementInViewport(that.endElement.current)) {
+          that.props.articlesActions.reachesBottom();
+          !that.props.isFetching
+            && !that.props.allArticlesReceived
+            && that.props.articlesActions.fetchArticles({ skip: that.props.countAlreadyLoadedArticles });
+        }
+      } else {
+        if (!that.isElementInViewport(that.endElement.current)) {
+          that.props.articlesActions.leavesBottom();
+        }
+      }
+    }
   }
 
   render() {
     let renderingArticles = this.props.articles.map((article) => {
       return (
-        <div key={article.articleId} className='card'>
-          <h4 className='title'>{article.title}</h4>
-          <div className="content">{article.content}</div>
+        <div key={article._id} className='card'>
+          <h4 className='title'>{article.articleTitle}</h4>
+          <div className="content">{article.articleContent}</div>
           <div className="share-on-twitter">
             <i className='fa fa-twitter'></i>
           </div>
@@ -28,11 +59,13 @@ class ArticlesComponent extends Component {
 
     return (
       <div>
-        {this.props.isFetching && <div className='snipper__wrapper'><div className='spinner'></div></div>}
         <h1>Articles Component!</h1>
         <div className='articles'>
           {renderingArticles}
         </div>
+        <div className="end" style={{"marginBottom": "20px"}} ref={this.endElement}></div>
+        {this.props.isFetching && <div className='snipper__wrapper'><div className='spinner'></div></div>}
+        {this.props.allArticlesReceived && <div>That's all, folks!</div>}
       </div>
     )
   }
@@ -47,7 +80,10 @@ function mapStateToProps(state) {
   console.log(state)
   return {
     articles: state.articlesReducer.articles,
-    isFetching: state.articlesReducer.isFetching
+    isFetching: state.articlesReducer.isFetching,
+    countAlreadyLoadedArticles: state.articlesReducer.countAlreadyLoadedArticles,
+    isAtBottom: state.articlesReducer.isAtBottom,
+    allArticlesReceived: state.articlesReducer.allArticlesReceived
   };
 }
 
