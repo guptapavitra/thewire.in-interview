@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as articlesActions from '../actions/articlesActions';
 import PropTypes from 'prop-types'
+import CroppedContent from '../component/CroppedContent';
 
 class ArticlesComponent extends Component {
   constructor(props) {
@@ -48,8 +49,12 @@ class ArticlesComponent extends Component {
     let renderingArticles = this.props.articles.map((article) => {
       return (
         <div key={article._id} className='card'>
-          <h4 className='title'>{article.articleTitle}</h4>
-          <div className="content">{article.articleContent}</div>
+          <h5 className='title'>{article.articleTitle}</h5>
+          <div className="content">
+            <CroppedContent content={article.articleContent}></CroppedContent>
+            &nbsp;
+            <button>Read More</button>
+          </div>
           <div className="share-on-twitter">
             <i className='fa fa-twitter'></i>
           </div>
