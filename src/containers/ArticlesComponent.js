@@ -50,13 +50,17 @@ class ArticlesComponent extends Component {
       return (
         <div key={article._id} className='card'>
           <h5 className='title'>{article.articleTitle}</h5>
+          <span className='date'>{new Date (article.createdAt.substr(0, 10)).toString().substr(0, 16)}</span>
           <div className="content">
             <CroppedContent content={article.articleContent}></CroppedContent>
             &nbsp;
             <button>Read More</button>
           </div>
           <div className="share-on-twitter">
-            <i className='fa fa-twitter'></i>
+            <a className="twitter-share-button"
+              href={`https://twitter.com/intent/tweet?text=${article.articleTitle}.`}
+              data-size="large">
+            Tweet</a>
           </div>
         </div>
       )
