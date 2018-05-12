@@ -8,7 +8,7 @@ export function fetchArticles({ skip = 0 }) {
   return dispatch => {
     dispatch({type: types.REQUEST_ARTICLES});
 
-    fetch(`http://localhost:4040/api/articles?limit=${4}&skip=${skip}`, {
+    fetch(`http://35.185.4.57/:4040/api/articles?limit=${4}&skip=${skip}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
